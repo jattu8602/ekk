@@ -16,6 +16,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { useLanguage } from '@/contexts/LanguageContext'
 
 // Next.js passes 'params' as a prop
 export default function ProductDetail({
@@ -23,6 +24,7 @@ export default function ProductDetail({
 }: {
   params: Promise<{ slug: string }>
 }) {
+  const { t } = useLanguage()
   const [slug, setSlug] = useState<string>('')
   const [selectedImage, setSelectedImage] = useState(0)
   const [quantity, setQuantity] = useState(1)
@@ -83,7 +85,7 @@ export default function ProductDetail({
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center gap-2 text-sm text-muted-foreground">
           <Link href="/" className="hover:text-primary">
-            Home
+            {t('breadcrumb.home')}
           </Link>
           <ChevronRight size={16} />
           <Link
@@ -210,16 +212,19 @@ export default function ProductDetail({
                   ₹{product.actualPrice}
                 </span>
                 <span className="bg-accent text-accent-foreground px-2 py-1 rounded text-sm font-bold">
-                  {product.discountPercent}% OFF
+                  {product.discountPercent}
+                  {t('product.off')}
                 </span>
               </div>
               <p className="text-sm text-muted-foreground">
-                Inclusive of all taxes
+                {t('product.inclusiveTaxes')}
               </p>
             </div>
 
             <div>
-              <Label className="mb-2 block font-medium">Select Unit</Label>
+              <Label className="mb-2 block font-medium">
+                {t('product.selectUnit')}
+              </Label>
               <Select value={selectedUnit} onValueChange={setSelectedUnit}>
                 <SelectTrigger className="w-full">
                   <SelectValue />
@@ -235,7 +240,9 @@ export default function ProductDetail({
             </div>
 
             <div>
-              <Label className="mb-2 block font-medium">Quantity</Label>
+              <Label className="mb-2 block font-medium">
+                {t('product.quantity')}
+              </Label>
               <div className="flex items-center gap-2 bg-muted rounded-md p-1 w-fit">
                 <button
                   onClick={() => handleQuantityChange(-1)}
@@ -257,17 +264,17 @@ export default function ProductDetail({
 
             <div className="flex gap-3">
               <Button size="lg" variant="outline" className="flex-1">
-                Add to Cart
+                {t('product.addToCart')}
               </Button>
               <Button size="lg" className="flex-1">
-                Buy Now
+                {t('product.buyNow')}
               </Button>
             </div>
 
             <div className="bg-secondary p-4 rounded-lg space-y-2 text-sm">
-              <p>✓ Free delivery on orders above ₹999</p>
-              <p>✓ 7-day easy returns</p>
-              <p>✓ Expert advice available</p>
+              <p>✓ {t('product.freeDelivery')}</p>
+              <p>✓ {t('product.returns')}</p>
+              <p>✓ {t('product.expertAdvice')}</p>
             </div>
           </div>
         </div>
@@ -279,19 +286,19 @@ export default function ProductDetail({
               value="description"
               className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary"
             >
-              Description
+              {t('product.description')}
             </TabsTrigger>
             <TabsTrigger
               value="specifications"
               className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary"
             >
-              Specifications
+              {t('product.specifications')}
             </TabsTrigger>
             <TabsTrigger
               value="reviews"
               className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary"
             >
-              Reviews ({product.reviewCount})
+              {t('product.reviews')} ({product.reviewCount})
             </TabsTrigger>
           </TabsList>
 
@@ -304,15 +311,15 @@ export default function ProductDetail({
           <TabsContent value="specifications" className="mt-6">
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <p className="font-medium">Category</p>
+                <p className="font-medium">{t('product.category')}</p>
                 <p className="text-muted-foreground">{product.category}</p>
               </div>
               <div>
-                <p className="font-medium">Subcategory</p>
+                <p className="font-medium">{t('product.subcategory')}</p>
                 <p className="text-muted-foreground">{product.subcategory}</p>
               </div>
               <div>
-                <p className="font-medium">Available Units</p>
+                <p className="font-medium">{t('product.availableUnits')}</p>
                 <p className="text-muted-foreground">
                   {product.units.join(', ')}
                 </p>
@@ -322,7 +329,7 @@ export default function ProductDetail({
 
           <TabsContent value="reviews" className="mt-6">
             <div className="text-center py-8 text-muted-foreground">
-              <p>Reviews feature coming soon...</p>
+              <p>{t('product.reviews')} feature coming soon...</p>
             </div>
           </TabsContent>
         </Tabs>

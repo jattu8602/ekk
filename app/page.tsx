@@ -1,9 +1,12 @@
+'use client'
+
 import Image from 'next/image'
 import Link from 'next/link'
 import ProductCard from '@/components/ProductCard'
 import { products, categories } from '@/data/products'
 import { Button } from '@/components/ui/button'
 import { ArrowRight } from 'lucide-react'
+import { useLanguage } from '@/contexts/LanguageContext'
 
 const categoryImages: Record<string, string> = {
   'category-seeds.jpg': '/category-seeds.jpg',
@@ -13,6 +16,7 @@ const categoryImages: Record<string, string> = {
 }
 
 export default function HomePage() {
+  const { t } = useLanguage()
   const featuredProducts = products.slice(0, 8)
 
   return (
@@ -30,14 +34,11 @@ export default function HomePage() {
           <div className="container mx-auto px-4">
             <div className="max-w-xl text-white">
               <h1 className="text-4xl md:text-5xl font-bold mb-4">
-                Welcome to Ekta Krishi Kendra
+                {t('home.hero.title')}
               </h1>
-              <p className="text-lg mb-6">
-                India's trusted source for quality seeds, fertilizers, and crop
-                protection products
-              </p>
+              <p className="text-lg mb-6">{t('home.hero.subtitle')}</p>
               <Button size="lg" className="shadow-lg">
-                Shop Now <ArrowRight className="ml-2" size={20} />
+                {t('home.hero.cta')} <ArrowRight className="ml-2" size={20} />
               </Button>
             </div>
           </div>
@@ -48,14 +49,17 @@ export default function HomePage() {
       <section className="container mx-auto px-4 py-12">
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h2 className="text-3xl font-bold mb-2">Our Bestsellers</h2>
+            <h2 className="text-3xl font-bold mb-2">
+              {t('home.bestsellers.title')}
+            </h2>
             <p className="text-muted-foreground">
-              Top-rated products trusted by farmers
+              {t('home.bestsellers.subtitle')}
             </p>
           </div>
           <Link href="/seeds">
             <Button variant="link" className="hidden md:flex items-center">
-              See More <ArrowRight className="ml-1" size={18} />
+              {t('home.bestsellers.seeMore')}{' '}
+              <ArrowRight className="ml-1" size={18} />
             </Button>
           </Link>
         </div>
@@ -71,9 +75,11 @@ export default function HomePage() {
       <section className="bg-secondary py-12">
         <div className="container mx-auto px-4">
           <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold mb-2">Shop by Category</h2>
+            <h2 className="text-3xl font-bold mb-2">
+              {t('home.categories.title')}
+            </h2>
             <p className="text-muted-foreground">
-              Find products for every farming need
+              {t('home.categories.subtitle')}
             </p>
           </div>
 

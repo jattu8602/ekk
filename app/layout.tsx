@@ -6,6 +6,7 @@ import Providers from '@/components/Providers'
 import TopAnnouncementBar from '@/components/TopAnnouncementBar'
 import MainHeader from '@/components/MainHeader'
 import CategoryNavBar from '@/components/CategoryNavBar'
+import Footer from '@/components/Footer'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -30,16 +31,7 @@ export default function RootLayout({
               <CategoryNavBar />
             </header>
             <main className="flex-grow">{children}</main>
-            <footer className="bg-foreground text-background py-8">
-              <div className="container mx-auto px-4 text-center">
-                <p className="text-sm opacity-80">
-                  © 2025 Ekta Krishi Kendra Keolari. All rights reserved.
-                </p>
-                <p className="text-sm opacity-80 mt-2">
-                  📞 Call to order: 8602074069
-                </p>
-              </div>
-            </footer>
+            <Footer />
           </div>
         </Providers>
       </body>

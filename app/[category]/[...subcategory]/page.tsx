@@ -1,9 +1,13 @@
+'use client'
+
 import Link from 'next/link'
 import { products, categories } from '@/data/products'
 import { ChevronRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import ProductCard from '@/components/ProductCard'
 import FilterSidebar from '@/components/FilterSidebar'
+import { useLanguage } from '@/contexts/LanguageContext'
+import { useEffect, useState } from 'react'
 
 // Define the shape of the 'params' prop provided by Next.js
 interface CategoryPageProps {
@@ -13,11 +17,30 @@ interface CategoryPageProps {
   }>
 }
 
-// This is a Server Component, so it's 'async' by default
-export default async function CategoryPage({ params }: CategoryPageProps) {
-  const { category } = await params
-  // Extract the first subcategory slug (if present)
-  const subcategory = (await params).subcategory?.[0]
+// This is now a Client Component
+export default function CategoryPage({ params }: CategoryPageProps) {
+  const { t } = useLanguage()
+  const [category, setCategory] = useState<string>('')
+  const [subcategory, setSubcategory] = useState<string>('')
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    params.then((resolvedParams) => {
+      setCategory(resolvedParams.category)
+      setSubcategory(resolvedParams.subcategory?.[0] || '')
+      setIsLoading(false)
+    })
+  }, [params])
+
+  if (isLoading) {
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <div className="text-center">
+          <p>Loading...</p>
+        </div>
+      </div>
+    )
+  }
 
   // helper to create a simple slug for matching (spaces -> '-', lowercase)
   const slugify = (s: string) =>
@@ -93,7 +116,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
         <div className="flex items-center gap-2 text-sm text-muted-foreground">
           {/* Use next/link with href prop */}
           <Link href="/" className="hover:text-primary">
-            Home
+            {t('breadcrumb.home')}
           </Link>
           <ChevronRight size={16} />
           {/* Add a link to the main category page */}
@@ -134,11 +157,11 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
               <h2 className="text-2xl font-bold capitalize">
                 {subcategory ? decodeURIComponent(subcategory) : categoryName}
                 <span className="text-muted-foreground text-base ml-2">
-                  ({filteredProducts.length} products)
+                  ({filteredProducts.length} {t('category.products.count')})
                 </span>
               </h2>
               <Button variant="outline" size="sm">
-                Sort by: Featured
+                {t('category.sortBy')} {t('category.sort.featured')}
               </Button>
             </div>
 
@@ -151,7 +174,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
             {filteredProducts.length === 0 && (
               <div className="text-center py-12">
                 <p className="text-muted-foreground">
-                  No products found in this category.
+                  {t('category.noProducts')}
                 </p>
               </div>
             )}
